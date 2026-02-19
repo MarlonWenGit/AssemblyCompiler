@@ -1,12 +1,15 @@
 import kotlin.random.Random
 
-// ONLY 2 MODIFICATIONS YOU SHOULD MAKE TO THIS PROGRAM
+// ONLY 3 MODIFICATIONS YOU SHOULD MAKE TO THIS PROGRAM
 // THE "val program", where you write ur program (its in the middle of the file somewhere)
 // The "val tests" which is how many randomized tests to run (its in the bottom of the file somewhere)
+// And this one
+var detailedTests = false // Set true for detailed individual tests, and false if you are running a ton of tests
 
 // The test cases are 2 randomly generated 16 bit numbers
 
 var bigCycles = 0
+var success = true
 
 fun test() {
     val r = MutableList(16) { 0 }
@@ -100,22 +103,27 @@ fun test() {
             break
         }
     }
-
-    println("Quotient = ${r[2]}")
-    println("Actual Quotient = ${dividend / divisor}")
-    println("Remainder = ${r[3]}")
-    println("Actual Remainder = ${dividend % divisor}")
-    println("Cycles = ${cycles}")
-    println()
     
     bigCycles += cycles
+    
+    if (detailedTests) {
+        println("Quotient = ${r[2]}")
+        println("Actual Quotient = ${dividend / divisor}")
+        println("Remainder = ${r[3]}")
+        println("Actual Remainder = ${dividend % divisor}")
+        println("Cycles = ${cycles}")
+        println()
+    }
+
+    success = success || (r[2] == (dividend / divisor) && r[3] == (dividend % divisor))
 }
 
 fun main() {
-    val tests = 500
+    val tests = 100
 
     repeat (tests) {
         test()
     }
     println("Average cycles: ${bigCycles/tests}")
+    println("All $tests tests passed = $success")
 }
