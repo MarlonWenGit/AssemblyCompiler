@@ -5,85 +5,63 @@ fun test() {
 
     var cycles = 0
 
-    fun add(d: Int, a: Int, b: Int) {
+    var pc = 0
+
+    fun add(d: Int, a: Int, b: Int): () -> Unit = {
         r[d] = r[a] + r[b]
         cycles++
+        pc++
     }
 
-    fun sub(d: Int, a: Int, b: Int) {
+    fun sub(d: Int, a: Int, b: Int): () -> Unit = {
         r[d] = r[a] - r[b]
         cycles++
+        pc++
     }
 
-    fun mul(d: Int, a: Int, b: Int) {
+    fun mul(d: Int, a: Int, b: Int): () -> Unit = {
         r[d] = r[a] * r[b]
         cycles+=3
+        pc++
     }
 
-    fun shl(d: Int, a: Int) {
+    fun shl(d: Int, a: Int): () -> Unit = {
         r[d] = r[d] shl r[a]
         cycles++
+        pc++
     }
 
-    fun shr(d: Int, a: Int) {
+    fun shr(d: Int, a: Int): () -> Unit = {
         r[d] = r[d] shr r[a]
         cycles++
+        pc++
     }
 
-    fun bor(d: Int, a: Int, b: Int) {
+    fun bor(d: Int, a: Int, b: Int): () -> Unit = {
         r[d] = r[a] or r[b]
         cycles++
+        pc++
     }
 
-    fun band(d: Int, a: Int, b: Int) {
+    fun band(d: Int, a: Int, b: Int): () -> Unit = {
         r[d] = r[a] and r[b]
         cycles++
+        pc++
     }
 
-    fun li(d: Int, i: Int) {
+    fun li(d: Int, i: Int): () -> Unit = {
         r[d] = i
         cycles++
+        pc++
     }
 
-    fun divide(dividend: Int, divisor: Int) {
-        // Initialize registers
-        li(0, dividend) // r[0] = Remainder / Current Dividend
-        li(1, divisor)  // r[1] = Divisor
-        li(2, 0)        // r[2] = Quotient
-        li(5, 1)        // r[5] = Constant 1 (used for incrementing/shifting)
-
-        while (true) {
-            // Check if remainder < divisor (r[0] < r[1])
-            sub(3, 0, 1)  // r[3] = r[0] - r[1]
-            if (r[3] < 0) break
-
-            li(3, r[1])   // r[3] = divisor (temp copy for shifting)
-            li(4, 0)      // r[4] = shift count
-
-            // Inner loop: Find largest shift such that (divisor << shift) <= remainder
-            while (true) {
-                shl(3, 5)    // r[3] = r[3] << 1 (Doubling the temp divisor)
-                add(4, 4, 5) // r[4]++ (Increment shift count)
-
-                // FIX #1: Pass indices 3 and 0, not values r[3] and r[0]
-                sub(6, 3, 0)
-
-                if (r[6] > 0) {
-                    // If shifted divisor > remainder, we went too far. Backtrack.
-                    shr(3, 5)    // Undo last shift
-                    sub(4, 4, 5) // Undo last increment
-                    break
-                }
-            }
-
-            // Subtract the shifted divisor from the remainder
-            sub(0, 0, 3)
-
-            // Add 1 << shift to the quotient
-            li(3, 1)
-            shl(3, 4)     // r[3] = 1 << shift count
-            add(2, 2, 3)  // quotient += r[3]
-        }
+    fun jz(a: Int, offset: Int): () -> Unit = {
+        if (r[a] == 0) pc += offset else pc++
+        cycles+=3
+    }
+    fun jp(a: Int, offset: Int): () -> Unit = {
+        if (r[a] > 0) pc += offset else pc++
+        cycles+=3
     }
 
     fun randomU16(): Int {
@@ -91,15 +69,29 @@ fun test() {
         return Random.nextInt(0, 65536)
     }
 
-    val n1 = randomU16()
-    val n2 = randomU16()
+    val program: List<() -> Unit> = listOf(
+        // -- write assembly here
+    )
 
-    divide(n1, n2)
+    val dividend = randomU16()
+    val divisor = randomU16()
+
+    r[0] = dividend
+    r[1] = divisor
+
+    while (pc in program.indices) {
+        program[pc]() // Execute the lambda at the current program counter
+
+        if (cycles > 100000) {
+            println("⚠️ Infinite Loop Detected! PC: $pc")
+            break
+        }
+    }
 
     println("Quotient = ${r[2]}")
-    println("Actual Quotient = ${n1 / n2}")
-    println("Remainder = ${r[0]}")
-    println("Actual Remainder = ${n1 % n2}")
+    println("Actual Quotient = ${dividend / divisor}")
+    println("Remainder = ${r[3]}")
+    println("Actual Remainder = ${dividend % divisor}")
     println("Cycles = ${cycles}")
     println()
 }
