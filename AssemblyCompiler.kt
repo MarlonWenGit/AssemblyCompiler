@@ -1,10 +1,16 @@
 import kotlin.random.Random
 
+// ONLY 2 MODIFICATIONS YOU SHOULD MAKE TO THIS PROGRAM
+// THE "val program", where you write ur program (its in the middle of the file somewhere)
+// The "val tests" which is how many randomized tests to run (its in the bottom of the file somewhere)
+
+// The test cases are 2 randomly generated 16 bit numbers
+
+var bigCycles = 0
+
 fun test() {
     val r = MutableList(16) { 0 }
-
     var cycles = 0
-
     var pc = 0
 
     fun add(d: Int, a: Int, b: Int): () -> Unit = {
@@ -65,12 +71,19 @@ fun test() {
     }
 
     fun randomU16(): Int {
-        // 65536 is the exclusive upper bound, so this returns 0..65535
         return Random.nextInt(0, 65536)
     }
 
     val program: List<() -> Unit> = listOf(
-        // -- write assembly here
+        // WRITE PROGRAM HERE
+        
+        // EXAMPLE PROGRAM
+        // add(0, 1, 2), <- IMPORTANT COMMA SINCE ITS A LIST
+        // mul(3, 4, 1)
+        // ETC...
+        
+        // STORE QUOTIENT IN REGISTER 2 AS IN SPEC
+        // STORE REMAINDER IN REGISTER 3 AS IN SPEC
     )
 
     val dividend = randomU16()
@@ -80,7 +93,7 @@ fun test() {
     r[1] = divisor
 
     while (pc in program.indices) {
-        program[pc]() // Execute the lambda at the current program counter
+        program[pc]() 
 
         if (cycles > 100000) {
             println("⚠️ Infinite Loop Detected! PC: $pc")
@@ -94,12 +107,15 @@ fun test() {
     println("Actual Remainder = ${dividend % divisor}")
     println("Cycles = ${cycles}")
     println()
+    
+    bigCycles += cycles
 }
 
 fun main() {
-    val tests = 10
+    val tests = 500
 
     repeat (tests) {
         test()
     }
+    println("Average cycles: ${bigCycles/tests}")
 }
