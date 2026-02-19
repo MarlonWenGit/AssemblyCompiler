@@ -1,9 +1,19 @@
-The easiest way to use the compiler is to copy and paste the kotlin code in AssemblyCompiler.kt into KOTLIN PLAYGROUND (search it up).
-Copy and paste your ASSEMBLY program into the "val program variable", which is a list of functions, and remember to add commas at the end of each line.
-Really should not take more than 5-10 minutes.
+# Assembly Compiler (Kotlin Playground)
 
-// ONLY 2 MODIFICATIONS YOU SHOULD MAKE TO THIS PROGRAM
-// The "val program", where you write your program (its in the middle of the file somewhere)
-// The "val tests" which is how many randomized tests to run (its in the bottom of the file somewhere)
+A very small assembly-style compiler + tester that runs entirely inside **Kotlin Playground**.
 
-// The test cases are 2 randomly generated 16 bit numbers
+You paste this file into Kotlin Playground, paste your assembly program, press run, and it will automatically test your code using random 16-bit numbers.
+
+Total setup time: about 5 minutes.
+
+---
+
+## 🚀 Quick Start
+
+1. Open **Kotlin Playground** in your browser.
+2. Copy the contents of `AssemblyCompiler.kt`.
+3. Paste it into Kotlin Playground.
+4. Scroll to the middle of the file and find:
+
+```kotlin
+val program = listOf(
