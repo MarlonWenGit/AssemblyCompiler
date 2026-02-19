@@ -1,4 +1,4 @@
-The easiest way to use the compiler is to copy and paste the kotlin code into KOTLIN PLAYGROUND (search it up).
+The easiest way to use the compiler is to copy and paste the kotlin code in AssemblyCompiler.kt into KOTLIN PLAYGROUND (search it up).
 Copy and paste your ASSEMBLY program into the "val program variables", which is a list of function, and remember to add commas at the end of each line.
 Really should not take more than 5-10 minutes.
 
