@@ -10,6 +10,8 @@ var detailedTests = false // Set true for detailed individual tests, and false i
 
 var bigCycles = 0
 var success = true
+var bestCase = 1999999
+var worstCase = 0
 
 fun test() {
     val r = MutableList(16) { 0 }
@@ -79,11 +81,7 @@ fun test() {
 
     val program: List<() -> Unit> = listOf(
         // WRITE PROGRAM HERE
-        
-        // EXAMPLE PROGRAM
-        // add(0, 1, 2), <- IMPORTANT COMMA SINCE ITS A LIST
-        // mul(3, 4, 1)
-        // ETC...
+       
         
         // STORE QUOTIENT IN REGISTER 2 AS IN SPEC
         // STORE REMAINDER IN REGISTER 3 AS IN SPEC
@@ -105,6 +103,8 @@ fun test() {
     }
     
     bigCycles += cycles
+    worstCase = maxOf(worstCase, cycles)
+    bestCase = minOf(bestCase, cycles)
     
     if (detailedTests) {
         println("Quotient = ${r[2]}")
@@ -115,15 +115,17 @@ fun test() {
         println()
     }
 
-    success = success || (r[2] == (dividend / divisor) && r[3] == (dividend % divisor))
+    success = success && (r[2] == (dividend / divisor) && r[3] == (dividend % divisor))
 }
 
 fun main() {
-    val tests = 100
+    val tests = 5000000
 
     repeat (tests) {
         test()
     }
     println("Average cycles: ${bigCycles/tests}")
     println("All $tests tests passed = $success")
+    println("Worst case = $worstCase")
+    println("Best case = $bestCase")
 }
