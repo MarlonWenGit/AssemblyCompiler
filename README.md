@@ -1,8 +1,7 @@
 # Assembly Compiler (Kotlin Playground)
 
 <img width="583" height="203" alt="image" src="https://github.com/user-attachments/assets/a33aa218-853e-42d2-bbec-c6f80f964e8e" />
-<img width="583" height="203" alt="image" src="https://github.com/user-attachments/assets/a33aa218-853e-42d2-bbec-c6f80f964e8e" />
-
+<img width="479" height="142" alt="image" src="https://github.com/user-attachments/assets/1adf0dec-57f4-4695-b1bc-15bb0c8271f0" />
 
 A very small assembly-style compiler + tester that runs entirely inside **Kotlin Playground**.
 
