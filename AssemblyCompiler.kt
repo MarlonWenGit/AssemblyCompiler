@@ -135,8 +135,8 @@ fun test() {
         divisor = randomU16()
     }
 
-    r[0] = 60000
-    r[1] = 14000
+    r[0] = dividend
+    r[1] = divisor
 
     while (pc in program.indices) {
         program[pc]() 
