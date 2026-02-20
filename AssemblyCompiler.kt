@@ -1,3 +1,5 @@
+import kotlin.random.Random
+
 // ONLY 4 MODIFICATIONS YOU SHOULD MAKE TO THIS PROGRAM
 // THE "val program", where you write ur program (its in the middle of the file somewhere)
 // And these ones
